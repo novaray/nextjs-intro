@@ -33,3 +33,11 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# webstorm(idea)
+/.idea/.gitignore
+/.idea/modules.xml
+/.idea/nextjs-intro.iml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
