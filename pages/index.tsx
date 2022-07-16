@@ -1,4 +1,6 @@
 import Seo from '../components/Seo';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface PopularMovie {
   id: number;
@@ -7,13 +9,35 @@ interface PopularMovie {
 }
 
 export default function Home({results}: { results: PopularMovie[] }) {
+  const router = useRouter();
+  const onClick = (id: number, title: string) => {
+    router.push({
+        pathname: `/movies/${id}`,
+        query: {
+          title
+        }
+      },
+      `/movies/${id}`);
+  }
   return (
     <div className="container">
       <Seo title="Home"/>
       {results?.map(movie => (
-        <div key={movie.id} className="movie">
+        // a tag 안에 div를 넣을 수 있지만 nomad coder 강의 흐름을 그대로 따라가기로 함.
+        <div onClick={() => onClick(movie.id, movie.original_title)} key={movie.id} className="movie">
           <img alt={`${movie.original_title} image`} src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
-          <h4>{movie.original_title}</h4>
+          <h4>
+            <Link
+              href={{
+                pathname: `/movies/${movie.id}`,
+                query: {
+                  title: movie.original_title
+                }
+              }}
+              as={`/movies/${movie.id}`}>
+              <a>{movie.original_title}</a>
+            </Link>
+          </h4>
         </div>
       ))}
       <style jsx>{`
@@ -22,6 +46,10 @@ export default function Home({results}: { results: PopularMovie[] }) {
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+
+        .movie {
+          cursor: pointer;
         }
 
         .movie img {
@@ -37,7 +65,7 @@ export default function Home({results}: { results: PopularMovie[] }) {
 
         .movie h4 {
           font-size: 18px;
-          text-align: center;
+          //text-align: center;
         }
       `}</style>
     </div>
